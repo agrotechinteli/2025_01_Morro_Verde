@@ -65,7 +65,7 @@ As Regras de Negócios (RNs) abaixo foram definidas para suportar os RNFs, garan
 | RN06 | O dashboard deve incluir gráficos que permitam comparar preços de concorrentes e identificar oportunidades de mercado. | RNF01, RNF04 | Usabilidade, Confiabilidade |
 | RN07 | Alterações no dashboard (ex.: novas funcionalidades, ajustes na interface) devem ser implementadas com base em feedback coletado da equipe comercial. | RNF01, RNF06 | Usabilidade, Manutenibilidade |
 | RN08 | O sistema deve ser entregue com documentação detalhada, incluindo guias de uso, descrições técnicas e instruções de manutenção. | RNF07, RNF10 | Manutenibilidade, Capacitação |
-| RN09 | O treinamento dos usuários deve ser realizado na Sprint 5, com sessões práticas para garantir que a equipe comercial utilize o dashboard eficientemente. | RNF01, RNF10 | Usabilidade, Capacitação |
+| RN09 | O treinamento dos usuários deve ser realizados com sessões práticas para garantir que a equipe comercial utilize o dashboard eficientemente. | RNF01, RNF10 | Usabilidade, Capacitação |
 | RN10 | O sistema deve ser desenvolvido utilizando Python, SQL e bibliotecas de visualização compatíveis, com versionamento de código via Git. | RNF06, RNF09 | Manutenibilidade, Compatibilidade |
 
 ### Benefícios das Regras de Negócios
