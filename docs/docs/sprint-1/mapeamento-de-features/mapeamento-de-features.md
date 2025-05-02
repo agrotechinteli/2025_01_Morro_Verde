@@ -11,14 +11,16 @@ Pensando nisso, este documento foi elaborado com o objetivo de apresentar de for
 
 
 
-| Feature | O que é? | Dados |
-|---------|----------|-------|
-| Câmbio em tempo real | Mostrar a taxa de câmbio atual e sua variação diante das semanas anteriores | Cotação do dólar e outras grandes moedas em tempo real para precificação baseada em tempo real. |
-|Upload de PDF| Permitir que o cliente faça uploads de relatórios semanais para que sejam analisados e também criar uma “timeline” com relatórios anteriores.|Relatórios em formato de pdf para que sejam analisados posteriormente e adicionados a “timeline”.|
-|Histórico de preços dos produtos| Pegar a cotação dos diversos produtos e realizar a análise da cotação dos produtos e mostrar possíveis tendências em relação aos mesmos|  Preço dos produtos nas últimas 4 semanas |
-|Calculador de frete|Mostrar o preço por estado/porto (ex.: preço da ureia em Goiás vs Mato Grosso). Possibilitar comparar um mesmo produto em diferentes locais (ótimo para otimizar compra e escolher o melhor porto)| Qual o tipo de frete escolhido pelo cliente,local e histórico de preços anteriores em dólar e convertido para o real, assim como o custo logístico dependendo do tipo de frete escolhido|
-|Filtros de pesquisa| Fazer com que o cliente filtre o resultado do dashboard, sendo por : produto,localização,moeda,porto e outros.| Todos os produtos,localizações, moedas, portos e outros aspectos que estiverem dentro de possíveis transações|
-|Sistema de Alertas| Fazer com que o dashboard gere alertas para o cliente, fazendo sugestões sobre possíveis oportunidades e também sobre momentos que exigem maior cautela | Histórico de transações anteriores e os diversos fatores que geraram situações adversas, tanto positivas como negativas.|
+| **Feature**               | **Descrição Simplificada**                                                                 | **Dados Necessários**                                                                 |
+|---------------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| **Câmbio em tempo real**  | Exibe o valor atual do dólar e sua variação nas últimas semanas.                          | Cotação do dólar e outras moedas atualizadas.                                         |
+| **Upload de PDF**         | Permite enviar relatórios em PDF e armazená-los em uma linha do tempo para consulta.      | Relatórios em PDF enviados semanalmente.                                              |
+| **Histórico de preços**   | Mostra a evolução dos preços dos produtos nas últimas semanas e identifica tendências.     | Preço dos produtos nas últimas 4 semanas.                                             |
+| **Calculador de frete**   | Compara o custo do mesmo produto em diferentes estados/portos, considerando o frete.       | Tipo de frete, local de entrega e histórico de preços e custos logísticos.            |
+| **Filtros de pesquisa**   | Permite filtrar os dados do dashboard por produto, região, moeda, porto e outros.         | Lista completa de produtos, regiões, moedas, portos e filtros aplicáveis.             |
+| **Sistema de alertas**    | Gera alertas automáticos com sugestões de oportunidades ou riscos com base nos dados.      | Histórico de transações e fatores que impactaram resultados anteriores.               |
+| **Comparador de preços**  | Compara os preços da Morro Verde com os da concorrência.                                  | Preços da concorrência obtidos por pesquisa de mercado ou cliente oculto.             |
+
 
 
 
