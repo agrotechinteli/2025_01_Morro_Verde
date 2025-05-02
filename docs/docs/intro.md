@@ -12,11 +12,15 @@ Espaço para vídeo de apresentação do projeto
 
 ## Empresa parceira
 
-Morro Verde Fertilizantes
-
-### Descrição da empresa
-
-A Morro Verde revoluciona o mercado de fertilizantes com investimento em pesquisa, tecnologia e conhecimento para extrair do solo matérias-primas que nutrem o solo brasileiro sem agredir ou empobrecer quimicamente. A empresa se destaca por sua abordagem sustentável e inovadora no setor de fertilizantes agrícolas.
+<div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', marginBottom: '2rem' }}>
+  <div style={{ flex: '0 0 300px', margin: '0 auto 1rem' }}>
+    <img src={require("../static/img/logo-morro-verde.png").default} alt="Logo do IPT" style={{ width: '100%', maxWidth: '400px', height: 'auto' }} />
+  </div>
+  <div style={{ flex: '1', minWidth: '300px', paddingLeft: '1rem' }}>
+    <h3>Morro Verde Fertilizantes</h3>
+    <p>A Morro Verde revoluciona o mercado de fertilizantes com investimento em pesquisa, tecnologia e conhecimento para extrair do solo matérias-primas que nutrem o solo brasileiro sem agredir ou empobrecer quimicamente. A empresa se destaca por sua abordagem sustentável e inovadora no setor de fertilizantes agrícolas.</p>
+  </div>
+</div>
 
 ## O Problema
 
@@ -62,8 +66,13 @@ Um dashboard interativo que centraliza dados de mercado, permitindo a visualiza�
       <sub><b>Cauê Taddeo</b></sub>
     </a>
   </div>
-  
-  {/* Segunda linha - 4 integrantes restantes */}
+  <div style={{ margin: 10, textAlign: 'center', width: '20%', minWidth: '120px', maxWidth: '150px' }}>
+    <a href="https://www.linkedin.com/in/eduardo-khaled-chmouri-guardiano-277a7b362/">
+      <img src={require("../static/img/Eduardo.png").default} style={{ borderRadius: '10%', width: '100%' }} alt="Eduardo Khaled" />
+      <br />
+      <sub><b>Eduardo Khaled</b></sub>
+    </a>
+  </div>
   <div style={{ margin: 10, textAlign: 'center', width: '20%', minWidth: '120px', maxWidth: '150px' }}>
     <a href="https://www.linkedin.com/in/enzorezende/">
       <img src={require("../static/img/Enzo.png").default} style={{ borderRadius: '10%', width: '100%' }} alt="Enzo Rezende" />
