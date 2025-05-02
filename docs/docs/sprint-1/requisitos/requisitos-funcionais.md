@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Requisitos funcionais representam as funcionalidades que o sistema deve obrigatoriamente oferecer para atender às necessidades dos usuários finais — neste caso, a equipe comercial da Morro Verde. Eles descrevem o que o sistema deve fazer, como, por exemplo, calcular margens de lucro, gerar relatórios de preços ou exibir tendências de mercado.
 
-O levantamento e a documentação desses requisitos são essenciais para garantir o alinhamento entre as expectativas do cliente e as entregas do time de desenvolvimento. Também servem como base para testes, validação de funcionalidades e futuras evoluções da solução.
+ O levantamento e a documentação desses requisitos são essenciais para garantir o alinhamento entre as expectativas do cliente e as entregas do time de desenvolvimento. Também servem como base para testes, validação de funcionalidades e futuras evoluções da solução.
 
 ---
 
