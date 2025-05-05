@@ -7,50 +7,51 @@ custom_edit_url: null
 
 ## Componentes da Solução Técnica
 
-### Frontend
-- **Descrição**: Aplicação web responsiva desenvolvida com [tecnologia utilizada, ex.: React, Vue.js, Next.js].
-- **Função**: Interface com o usuário para coleta de dados, exibição de informações e interação com o backend.
-- **Comunicação**: Requisições HTTP (REST) ou WebSocket para comunicação em tempo real com o backend.
+# Arquitetura da Aplicação
 
-### Backend
-- **Descrição**: Servidor de aplicação desenvolvido com [tecnologia utilizada, ex.: Node.js/Express, Django, Flask, Spring Boot].
-- **Função**: Processamento das requisições do frontend, execução de regras de negócio e acesso ao banco de dados.
-- **Comunicação**: Fornecimento de APIs RESTful (ou GraphQL) para o frontend e conexão segura com o banco de dados.
+## Frontend
 
-### APIs
-- **Descrição**: Interfaces para comunicação entre frontend e backend.
-- **Função**: Disponibilizar endpoints para operações de CRUD, autenticação e integração com serviços externos.
-- **Formato de Dados**: JSON.
+- **Descrição**: Aplicação web interativa desenvolvida com Streamlit, focada em visualização de dados e interação com usuários de forma simples e rápida.
+- **Função**: Interface para upload de arquivos (como PDFs), visualização de dashboards interativos e análise gráfica.
+- **Comunicação**: Envia requisições HTTP ao backend ou interage diretamente com lógica Python integrada ao Streamlit.
 
-### Banco de Dados
-- **Descrição**: Sistema de gerenciamento de banco de dados relacional (PostgreSQL, MySQL) ou não relacional (MongoDB, Firebase).
-- **Função**: Armazenamento persistente de informações da aplicação.
+## Backend
 
-### Serviços Externos (opcional)
-- **Descrição**: APIs de terceiros como serviços de autenticação, pagamento, envio de e-mails, mapas, armazenamento de arquivos.
-- **Exemplos**: Auth0, Firebase Auth, Stripe, AWS S3.
+- **Descrição**: Backend desenvolvido em Python, responsável pelo processamento de dados, integração com APIs de IA e manipulação de arquivos.
+- **Função**: Extração de dados de PDFs usando APIs (como AWS Textract, Google Cloud Vision ou OpenAI), processamento de dados e envio de resultados ao frontend.
+- **Comunicação**: APIs RESTful e integração direta com o Streamlit; conexão com o banco de dados PostgreSQL para armazenamento e recuperação de dados.
+
+## APIs
+
+- **Descrição**: Interfaces de integração com serviços externos de IA e OCR.
+- **Função**: Realizar a extração automática de informações a partir de documentos (como PDFs escaneados).
+- **Exemplos**:
+  - AWS Textract
+  - Google Cloud Vision
+  - OpenAI API
+- **Formato de Dados**: JSON
+
+## Banco de Dados
+
+- **Descrição**: Sistema relacional utilizando PostgreSQL.
+- **Função**: Armazenamento estruturado e persistente de dados extraídos, análises, relatórios e histórico de interações do usuário.
+
+## Visualização de Dados
+
+- **Descrição**: Gráficos e dashboards gerados com Plotly, Matplotlib e Seaborn.
+- **Função**: Exibir dados de forma visual e interativa, facilitando a análise e tomada de decisão.
+
+## Hospedagem
+
+- **Descrição**: A aplicação pode ser hospedada em Heroku ou Streamlit Cloud, permitindo fácil acesso via web.
+- **Função**: Disponibilizar a aplicação ao usuário final sem necessidade de infraestrutura própria.
 
 ## Fluxo de Dados
 
-1. O **usuário** interage com o **frontend**.
-2. O **frontend** envia uma **requisição HTTP** para o **backend** via **API**.
-3. O **backend** processa a requisição:
-    - Executa regras de negócio.
-    - Acessa o **banco de dados** para ler ou gravar dados.
-4. O **backend** retorna uma **resposta** ao **frontend**.
-5. O **frontend** atualiza a interface para o **usuário**.
-6. Quando necessário, o **backend** também se comunica com **serviços externos**.
-
-## Diagrama de Comunicação
-
-```mermaid
-graph LR
-    Usuario((Usuário)) --> Frontend
-    Frontend --> API
-    API --> Backend
-    Backend --> BancoDeDados((Banco de Dados))
-    Backend --> ServicosExternos((Serviços Externos))
-```
-
-
-
+1. O usuário acessa a aplicação via navegador (frontend em Streamlit).
+2. O usuário envia um arquivo (como um PDF).
+3. O backend (Python) processa o arquivo e utiliza APIs externas (AWS Textract, Google Cloud Vision ou OpenAI) para extrair informações.
+4. Os dados extraídos são armazenados no PostgreSQL.
+5. O backend utiliza bibliotecas de visualização (Plotly, Seaborn, Matplotlib) para gerar gráficos e dashboards.
+6. O frontend exibe os resultados de forma interativa ao usuário.
+7. Toda a aplicação é hospedada em Heroku ou Streamlit Cloud, acessível via web.
