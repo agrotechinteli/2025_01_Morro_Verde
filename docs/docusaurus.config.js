@@ -7,11 +7,11 @@ const config = {
   tagline: 'Dinosaurs are cool',
   favicon: 'img/favicon.ico',
 
-  url: 'https://your-docusaurus-site.example.com',
-  baseUrl: '/',
+  url: 'https://inteliprojects.github.io', // Atualize conforme sua organização
+  baseUrl: '/2025_01_Morro_Verde/',
 
-  organizationName: 'facebook',
-  projectName: 'docusaurus',
+  organizationName: 'InteliProjects', // Atualize conforme sua organização
+  projectName: '2025_01_Morro_Verde',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -40,8 +40,6 @@ const config = {
     ],
   ],
   
-  // REMOVA O PLUGIN DE REDIRECIONAMENTO
-
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
@@ -57,11 +55,10 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Tutorial',
-            // Não adicione "to" aqui, pois isso pode causar comportamento inesperado
+            label: 'Documentação',
           },
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/InteliProjects/2025_01_Morro_Verde', // Atualize para o URL correto do seu repositório
             label: 'GitHub',
             position: 'right',
           },
@@ -74,8 +71,8 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
-                to: '/intro',
+                label: 'Documentação',
+                to: '/',
               },
             ],
           },
