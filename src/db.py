@@ -1,41 +1,78 @@
 import sqlite3
 
-# Função para criar a conexão com o banco de dados SQLite
+DB_PATH = 'morro_verde.db'
+
 def criar_conexao():
-    return sqlite3.connect('morro_verde.db')
+    """Cria uma conexão com o banco SQLite e ativa as foreign keys."""
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute('PRAGMA foreign_keys = ON')
+    return conn
 
-# Função para criar a tabela no banco de dados (caso não exista)
-def criar_tabela():
+def criar_tabelas():
+    """Cria todas as tabelas necessárias no banco de dados."""
+    tabelas = {
+        "produto": '''
+            CREATE TABLE IF NOT EXISTS produto (
+                id_produto INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                tipo TEXT NOT NULL
+            );
+        ''',
+        "localizacao": '''
+            CREATE TABLE IF NOT EXISTS localizacao (
+                id_localizacao INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                tipo TEXT NOT NULL
+            );
+        ''',
+        "preco": '''
+            CREATE TABLE IF NOT EXISTS preco (
+                id_preco INTEGER PRIMARY KEY AUTOINCREMENT,
+                id_produto INTEGER NOT NULL,
+                id_localizacao INTEGER NOT NULL,
+                data_preco DATE NOT NULL,
+                preco_usd TEXT,
+                preco_brl TEXT,
+                tipo_preco TEXT,
+                FOREIGN KEY (id_produto) REFERENCES produto(id_produto),
+                FOREIGN KEY (id_localizacao) REFERENCES localizacao(id_localizacao)
+            );
+        ''',
+        "frete": '''
+            CREATE TABLE IF NOT EXISTS frete (
+                id_frete INTEGER PRIMARY KEY AUTOINCREMENT,
+                origem INTEGER NOT NULL,
+                destino INTEGER NOT NULL,
+                tipo_transporte TEXT NOT NULL,
+                preco_usd TEXT,
+                preco_brl TEXT,
+                data_frete DATE NOT NULL,
+                FOREIGN KEY (origem) REFERENCES localizacao(id_localizacao),
+                FOREIGN KEY (destino) REFERENCES localizacao(id_localizacao)
+            );
+        ''',
+        "barter": '''
+            CREATE TABLE IF NOT EXISTS barter (
+                id_barter INTEGER PRIMARY KEY AUTOINCREMENT,
+                cultura TEXT NOT NULL,
+                id_produto INTEGER NOT NULL,
+                estado TEXT NOT NULL,
+                preco_npk TEXT,
+                preco_cultura TEXT,
+                razao_barter TEXT,
+                data DATE NOT NULL,
+                FOREIGN KEY (id_produto) REFERENCES produto(id_produto)
+            );
+        '''
+    }
+
     conn = criar_conexao()
     cursor = conn.cursor()
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS fertilizantes (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT NOT NULL,
-        preco REAL NOT NULL,
-        fornecedor TEXT NOT NULL,
-        data_atualizacao TEXT NOT NULL
-    );
-    ''')
+    for nome, ddl in tabelas.items():
+        cursor.execute(ddl)
     conn.commit()
     conn.close()
 
-# Função para inserir dados no banco de dados
-def inserir_fertilizante(nome, preco, fornecedor, data_atualizacao):
-    conn = criar_conexao()
-    cursor = conn.cursor()
-    cursor.execute('''
-    INSERT INTO fertilizantes (nome, preco, fornecedor, data_atualizacao)
-    VALUES (?, ?, ?, ?)
-    ''', (nome, preco, fornecedor, data_atualizacao))
-    conn.commit()
-    conn.close()
-
-# Função para consultar os dados no banco de dados
-def consultar_fertilizantes():
-    conn = criar_conexao()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM fertilizantes')
-    dados = cursor.fetchall()
-    conn.close()
-    return dados
+if __name__ == "__main__":
+    criar_tabelas()
+    print("Tabelas criadas com sucesso.")
