@@ -28,13 +28,8 @@ def carregar_dados():
     ''', conn)
 
     df_barter = pd.read_sql_query('''
-        SELECT cultura, estado, preco_npk, preco_cultura, razao_barter, data
+        SELECT id_barter, cultura, id_produto, estado, preco_npk, preco_cultura, razao_barter, data
         FROM barter
-    ''', conn)
-
-    df_barter = pd.read_sql_query('''
-    SELECT id_barter, cultura, id_produto, estado, preco_npk, preco_cultura, razao_barter, data
-    FROM barter
     ''', conn)
 
 
