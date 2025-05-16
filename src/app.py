@@ -14,24 +14,23 @@ def criar_conexao():
 def carregar_dados():
     conn = criar_conexao()
     df_precos = pd.read_sql_query('''
-        SELECT p.nome AS produto, l.nome AS localizacao, pr.data_preco, pr.preco_brl, pr.preco_usd
+        SELECT p.nome AS produto, l.nome AS localizacao, pr.data_preco, pr.preco, pr.moeda
         FROM preco pr
         JOIN produto p ON p.id_produto = pr.id_produto
         JOIN localizacao l ON l.id_localizacao = pr.id_localizacao
     ''', conn)
 
     df_fretes = pd.read_sql_query('''
-        SELECT l1.nome AS origem, l2.nome AS destino, f.tipo_transporte, f.preco_brl, f.data_frete
+        SELECT l1.nome AS origem, l2.nome AS destino, f.tipo_transporte, f.preco, f.moeda, f.data_frete
         FROM frete f
         JOIN localizacao l1 ON f.origem = l1.id_localizacao
         JOIN localizacao l2 ON f.destino = l2.id_localizacao
     ''', conn)
 
     df_barter = pd.read_sql_query('''
-        SELECT id_barter, cultura, id_produto, estado, preco_npk, preco_cultura, razao_barter, data
+        SELECT id_barter, cultura, id_produto, estado, preco_fertilizante, preco_cultura, razao_barter, data
         FROM barter
     ''', conn)
-
 
     conn.close()
     return df_precos, df_fretes, df_barter
@@ -42,10 +41,9 @@ st.set_page_config(page_title="Dashboard Morro Verde", layout="wide")
 # Carregamento e pré-processamento dos dados (antes dos botões)
 df_precos, df_fretes, df_barter = carregar_dados()
 df_precos['data_preco'] = pd.to_datetime(df_precos['data_preco'])
-df_precos['preco_brl'] = pd.to_numeric(df_precos['preco_brl'], errors='coerce')
-df_precos['preco_usd'] = pd.to_numeric(df_precos['preco_usd'], errors='coerce')
+df_precos['preco'] = pd.to_numeric(df_precos['preco'], errors='coerce')
 df_barter['data'] = pd.to_datetime(df_barter['data'])
-df_barter['preco_npk'] = pd.to_numeric(df_barter['preco_npk'], errors='coerce')
+df_barter['preco_fertilizante'] = pd.to_numeric(df_barter['preco_fertilizante'], errors='coerce')
 df_barter['preco_cultura'] = pd.to_numeric(df_barter['preco_cultura'], errors='coerce')
 df_barter['razao_barter'] = pd.to_numeric(df_barter['razao_barter'], errors='coerce')
 
@@ -56,7 +54,6 @@ with st.sidebar:
     st.button("Página Inicial")
     st.button("Previsões")
     st.button("Perfil/Login")
-
 # Título principal
 st.title("DASHBOARD - Análise de Concorrência")
 
@@ -64,57 +61,44 @@ st.title("DASHBOARD - Análise de Concorrência")
 with st.container():
     col1, col2, col3 = st.columns([1, 1, 1])
 
+    # Filtros aplicados apenas à visualização dos gráficos
     with col1:
-        if st.button("🔍 FILTRAR DADOS"):
-            with st.popover("Filtros Disponíveis"):
-                st.markdown("### Filtro de Dados")
-                produtos = st.multiselect("Produto:", df_precos['produto'].unique(), key="pop_prod")
-                locais = st.multiselect("Localização:", df_precos['localizacao'].unique(), key="pop_loc")
-                data_ini = st.date_input("Data Inicial:", value=pd.to_datetime(df_precos['data_preco'].min()), key="pop_data_ini")
-                data_fim = st.date_input("Data Final:", value=pd.to_datetime(df_precos['data_preco'].max()), key="pop_data_fim")
-                if st.button("Aplicar Filtros"):
-                    st.session_state['produtos'] = produtos
-                    st.session_state['locais'] = locais
-                    st.session_state['data_ini'] = data_ini
-                    st.session_state['data_fim'] = data_fim
-
+        st.button("🔍 FILTRAR DADOS")
+        
     with col2:
         st.button("📥 IMPORTAR RELATÓRIO")
 
     with col3:
-        if st.button("📝 INPUTAR DADOS"):
-            with st.popover("Inserção de Dados"):
-                with st.form("form_input"):
-                    nome = st.text_input("Nome do Produto")
-                    tipo = st.text_input("Tipo do Produto")
-                    submitted = st.form_submit_button("Inserir")
-                    if submitted and nome and tipo:
-                        conn = criar_conexao()
-                        cursor = conn.cursor()
-                        cursor.execute("INSERT INTO produto (nome, tipo) VALUES (?, ?)", (nome, tipo))
-                        conn.commit()
-                        conn.close()
-                        st.success("Produto inserido com sucesso!")
-
-# Aplicar filtros salvos
-if 'produtos' in st.session_state:
-    if st.session_state['produtos']:
-        df_precos = df_precos[df_precos['produto'].isin(st.session_state['produtos'])]
-if 'locais' in st.session_state:
-    if st.session_state['locais']:
-        df_precos = df_precos[df_precos['localizacao'].isin(st.session_state['locais'])]
-if 'data_ini' in st.session_state and 'data_fim' in st.session_state:
-    df_precos = df_precos[(df_precos['data_preco'] >= pd.to_datetime(st.session_state['data_ini'])) &
-                          (df_precos['data_preco'] <= pd.to_datetime(st.session_state['data_fim']))]
-
+        st.button("📝 INPUTAR DADOS")
+            
 # Gráfico interativo principal
 st.subheader("📈 Variação de Preços por Concorrente")
+
+# Seleção de produto e moeda
 produto_focus = st.selectbox("Produto para análise", df_precos['produto'].unique())
-df_focus = df_precos[df_precos['produto'] == produto_focus]
-fig = px.line(df_focus.sort_values('data_preco'), x='data_preco', y='preco_brl', color='localizacao',
-              title=f'Histórico de Preços (BRL) - {produto_focus}', markers=True)
-fig.update_layout(title_font=dict(size=20), margin=dict(t=50, b=10))
-st.plotly_chart(fig, use_container_width=True)
+moeda_focus = st.selectbox("Moeda:", df_precos['moeda'].unique())
+
+# Filtrar por produto e moeda
+df_focus = df_precos[
+    (df_precos['produto'] == produto_focus) &
+    (df_precos['moeda'] == moeda_focus)
+]
+
+# Verifica se há dados disponíveis
+if not df_focus.empty:
+    fig = px.line(
+        df_focus.sort_values('data_preco'),
+        x='data_preco',
+        y='preco',
+        color='localizacao',
+        title=f'Histórico de Preços ({moeda_focus}) - {produto_focus}',
+        markers=True
+    )
+    fig.update_layout(title_font=dict(size=20), margin=dict(t=50, b=10))
+    st.plotly_chart(fig, use_container_width=True)
+else:
+    st.warning("Nenhum dado encontrado para o produto e moeda selecionados.")
+
 
 # Seção de Avisos Urgentes
 st.subheader("⚠️ Avisos Urgentes")
@@ -170,17 +154,18 @@ if fertilizante_selecionado:
 st.subheader("📊 Análises Gerais")
 col1, col2 = st.columns(2)
 
-# Gráfico 1 - Média de preço por produto
+# Gráfico 1 - Média de preço por produto (em BRL)
 with col1:
-    preco_medio = df_precos.groupby("produto")["preco_brl"].mean().reset_index()
-    fig1 = px.bar(preco_medio, x='produto', y='preco_brl', title='Preço Médio por Produto', text_auto=True)
+    preco_medio = df_precos[df_precos['moeda'] == 'BRL'].groupby("produto")["preco"].mean().reset_index()
+    fig1 = px.bar(preco_medio, x='produto', y='preco', title='Preço Médio por Produto (BRL)', text_auto=True)
     st.plotly_chart(fig1, use_container_width=True)
 
-# Gráfico 2 - Média de preço por local
+# Gráfico 2 - Média de preço por local (em BRL)
 with col2:
-    preco_local = df_precos.groupby("localizacao")["preco_brl"].mean().reset_index()
-    fig2 = px.pie(preco_local, names='localizacao', values='preco_brl', title='Distribuição de Preço Médio por Localização')
+    preco_local = df_precos[df_precos['moeda'] == 'BRL'].groupby("localizacao")["preco"].mean().reset_index()
+    fig2 = px.pie(preco_local, names='localizacao', values='preco', title='Distribuição de Preço Médio por Localização (BRL)')
     st.plotly_chart(fig2, use_container_width=True)
+
 
 # Tabela de fretes
 st.subheader("🚚 Tabela de Fretes Atuais")
